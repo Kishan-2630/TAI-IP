@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Slider</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #8caddb; /* Light background */
+    }
+
+    .slider-title {
+        text-align: center; /* Center the title */
+        margin-top: 20px; /* Adjust top margin */
+        font-size: 24px; /* Adjust font size */
+        color: #000000; /* Adjust font color */
+        font-family: "Arial", sans-serif; /* Change font family */
+    }
+
+    .slider-container {
+      width: 100%;
+      max-width: 900px; /* Set maximum width for the slider */
+      margin: auto;
+      overflow: hidden;
+      position: relative;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    .image-container {
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .slide img {
+      max-width: 100%; /* Ensure image does not exceed container width */
+      height: 550px; /* Set a fixed height for the images */
+      display: block; /* Ensure centered alignment */
+      margin: 0 auto; /* Center the image horizontally */
+      object-fit: cover; /* Ensure images maintain aspect ratio and cover the entire space */
+      border-radius: 10px 10px 0 0; /* Rounded corners on top */
+    }
+
+    .slide:hover img {
+      transform: scale(1.05); /* Scale up image on hover */
+    }
+
+    .active {
+      display: block;
+    }
+
+    .navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .navigation button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .navigation button:hover {
+      background-color: #3498db; /* Primary blue color on hover */
+      color: #fff;
+    }
+
+    .navigation-dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .navigation-dot {
+      width: 12px;
+      height: 12px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 50%;
+      background-color: #ccc;
+    }
+
+    .navigation-dot.active {
+      background-color: #2535c8; 
+    }
+  </style>
+</head>
+<body>
+
+<div class="slider-container">
+<h2 class="slider-title">My Image Slider</h2>
+  <div class="image-container">
+    <div class="slide active">
+      <img src="1.jpg" alt="Slide 1">
+    </div>
+    <div class="slide">
+      <img src="2.jpg" alt="Slide 2">
+    </div>
+    <div class="slide">
+      <img src="3.jpg" alt="Slide 3">
+    </div>
+  </div>
+  <div class="navigation">
+    <button id="prev" class="btn btn-primary">Previous</button>
+    <button id="autoplay" class="btn btn-primary">Autoplay</button>
+    <button id="next" class="btn btn-primary">Next</button>
+  </div>
+  <div class="navigation-dots">
+    <button class="navigation-dot active"></button>
+    <button class="navigation-dot"></button>
+    <button class="navigation-dot"></button>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.navigation-dot');
+  let currentSlide = 0;
+  let isPlaying = false;
+  let intervalId;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      if (i === index) {
+        slide.classList.add('active');
+        dots[i].classList.add('active');
+      } else {
+        slide.classList.remove('active');
+        dots[i].classList.remove('active');
+      }
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function previousSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function updateDots() {
+    dots.forEach((dot, i) => {
+      if (i === currentSlide) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  }
+
+  function autoplay() {
+    if (!isPlaying) {
+      isPlaying = true;
+      intervalId = setInterval(nextSlide, 1500); // Change slide every 1.5 seconds
+    } else {
+      clearInterval(intervalId);
+      isPlaying = false;
+    }
+  }
+
+  document.getElementById('prev').addEventListener('click', previousSlide);
+  document.getElementById('next').addEventListener('click', nextSlide);
+  document.getElementById('autoplay').addEventListener('click', autoplay);
+</script>
+
+</body>
+</html>
